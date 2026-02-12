@@ -8,8 +8,18 @@ wxWidgets 2.8.8 compiled for all versions from Windows 95 to Windows 11.
 I made this because I plan to use wxWidgets in future projects.
 # Instructions
 <h2><b>Required:</b></h2>
-<h3>-> DevC++ 5.11 with TDM GCC 4.7.3 (GCC needs to be below 4.9)</h3>
+<pre><code>DevC++ 5.11 with TDM GCC 4.7.3 (GCC needs to be below 4.9)</code></pre>
+<pre><code>OPTIONAL: after installation, register DevCPP\MinGW\Bin to PATH</code></pre>
+
 <h2><b>Commands:</b></h2>
+<h3>Step 1: Navigate to correct directory</h3>
+<p>Go to <code>wxwidgets-folder-name\build\msw</code></p>
+
+<h3>Step 2: Clean after previous build</h3>
+<pre><code>mingw32-make -f makefile.gcc BUILD=release clean</code></pre>
+
+<h3>Step 3: Build</h3>
+<pre><code>mingw32-make -f makefile.gcc BUILD=release SHELL=CMD.exe SHARED=1 UNICODE=0 MONOLITHIC=0 CXXFLAGS="-fpermissive"</code></pre>
 
 # Supported OSes
 <b>Supports all versions of Windows, from Windows 95 up to Windows 11:</b>

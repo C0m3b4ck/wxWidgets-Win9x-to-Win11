@@ -1,5 +1,3 @@
-
-
 <a href=https://github.com/C0m3b4ck/wxWidgets-Win9x-to-Win11/blob/main/README_PL.md>🇵🇱🇵🇱🇵🇱🇵🇱🇵🇱POLSKA WERSJA🇵🇱🇵🇱🇵🇱🇵🇱🇵🇱🇵🇱</a>
 <br>![GitHub All Releases](https://img.shields.io/github/downloads/C0m3b4ck/wxWidgets-Win9x-to-Win11/total)
 <br><b>🇪🇺🇪🇺🇪🇺Made in Europe🇪🇺🇪🇺🇪🇺
@@ -7,7 +5,7 @@
 wxWidgets 2.8.8 compiled for all versions from Windows 95 to Windows 11.
 I made this because I plan to use wxWidgets in future projects.
 # Instructions
-🎥🎥🎥<b>Video can be found here: https://www.youtube.com/watch?v=XJnaWSU3plc</b>🎥🎥🎥
+🎥🎥🎥<b>Video can be found here: https://www.youtube.com/watch?v=XJnaWSU3plc</a></b>🎥🎥🎥
 <h2><b>Required:</b></h2>
 <pre><code>wxMSW 2.8.8, found here: <a href=https://github.com/wxWidgets/wxWidgets/releases/tag/v2.8.8>https://github.com/wxWidgets/wxWidgets/releases/tag/v2.8.8</a></code></pre>
 <pre><code>DevC++ 5.11 with TDM GCC 4.7.3 (GCC needs to be below 4.9)</code></pre>
@@ -17,10 +15,39 @@ I made this because I plan to use wxWidgets in future projects.
 <h3>Step 1: Navigate to correct directory</h3>
 <p>Go to <code>wxwidgets-folder-name\build\msw</code></p>
 
-<h3>Step 2: Clean after previous build</h3>
-<pre><code>mingw32-make -f makefile.gcc BUILD=release clean</code></pre>
+<h3>Step 2: Open build/msw/makefile.gcc</h3>
+<p>Search for <i>"%(MONOLIB_OBJECTS)"</i> until you find this snippet: </p>
+<pre><code>
+ifeq ($(MONOLITHIC),1)
+ifeq ($(SHARED),0)
+$(LIBDIRNAME)\libwx$(PORTNAME)$(WXUNIVNAME)$(WX_RELEASE_NODOT)$(WXUNICODEFLAG)$(WXDEBUGFLAG)$(WX_LIB_FLAVOUR).a: $(MONOLIB_OBJECTS)
+	if exist $@ del $@
+	ar rcu $@ $(MONOLIB_OBJECTS)
+	ranlib $@
+endif
+endif</code></pre>
+<p>Replace it with this: </p>
+<pre><code>
+ifeq ($(MONOLITHIC),1)
+ifeq ($(SHARED),0)
+$(LIBDIRNAME)\libwx$(PORTNAME)$(WXUNIVNAME)$(WX_RELEASE_NODOT)$(WXUNICODEFLAG)$(WXDEBUGFLAG)$(WX_LIB_FLAVOUR).a: $(MONOLIB_OBJECTS)
+	if exist $@ del $@
+    echo $(MONOLIB_OBJECTS) > objects.rsp
+    ar rcu $@ @objects.rsp
+    ranlib $@
+    del objects.rsp
+endif
+</code></pre>
+<p>For reference, the added/replaced/removed lines were:</p> 
+<b>Added:</b>
+<pre><code>echo $(MONOLIB_OBJECTS) > objects.rsp </code></pre>
+<pre><code>del objects.rsp </span></code></pre>
+<b>Replaced: </b>
+<pre><code>ar rcu $@ @objects.rsp </code></pre> <b>is a replacement for</b> <pre><code>ar rcu $@ $(MONOLIB_OBJECTS)</code></pre>
+<b>Removed: </b>
+<pre><code>endif </code></pre>
 
-<h3>Step 3: Build</h3>
+<h3>Step 4: Build</h3>
 <pre><code>mingw32-make -f makefile.gcc BUILD=release SHELL=CMD.exe SHARED=1 UNICODE=0 MONOLITHIC=0 CXXFLAGS="-fpermissive"</code></pre>
 
 # Supported OSes
@@ -61,4 +88,6 @@ I made this because I plan to use wxWidgets in future projects.
 
 # Author
 Original link here: <a href=https://github.com/wxWidgets/wxWidgets/releases/tag/v2.8.8>https://github.com/wxWidgets/wxWidgets/releases/tag/v2.8.8</a>
+
+
 
